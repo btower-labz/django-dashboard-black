@@ -23,3 +23,17 @@ package-lock.json
 
 staticfiles/*
 !staticfiles/.gitkeep 
+
+# Database data
+database
+
+# Sessions data
+sessions
+
+# Local environment
+.env
+
+# Backups, saves and oldies
+*.bak
+*.old
+*.save
