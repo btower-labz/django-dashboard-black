@@ -1,0 +1,29 @@
+version: '3'
+services:
+  app:
+    restart: always
+    env_file: .env
+    build: .
+    ports:
+      - "5005:5005"
+    networks:
+      - int_network
+
+  lb:
+    restart: always
+    image: "nginx:1.19.3"
+    ports:
+      - "85:85"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - ext_network
+      - int_network
+    depends_on: 
+      - app
+
+networks:
+  int_network:
+    driver: bridge
+  ext_network:
+    driver: bridge
