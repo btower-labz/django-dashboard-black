@@ -2,7 +2,8 @@ FROM python:3.6
 
 ENV FLASK_APP run.py
 
-COPY manage.py gunicorn-cfg.py requirements.txt .env ./
+# TODO: .env should be mounted
+COPY manage.py gunicorn-cfg.py requirements.txt ./
 COPY app app
 COPY authentication authentication
 COPY core core
