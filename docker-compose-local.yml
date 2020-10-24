@@ -2,7 +2,10 @@ version: '3'
 services:
   app:
     restart: always
-    env_file: .env
+    env_file: 
+      - .env-local
+    environment:
+      - "DJANGO_SETTINGS_PROFILE=local"
     build: .
     ports:
       - "5005:5005"
@@ -15,7 +18,10 @@ services:
 
   migration:
     restart: "no"
-    env_file: .env
+    env_file: 
+      - .env-local
+    environment:
+      - "DJANGO_SETTINGS_PROFILE=local"
     build: .
     entrypoint: ["sh", "-c", "python manage.py makemigrations && python manage.py migrate"]    
     networks:
@@ -38,7 +44,8 @@ services:
 
   database:
     restart: always
-    env_file: .env
+    env_file: 
+      - .env-local
     image: mysql:5.7.32
     command: --default-authentication-plugin=mysql_native_password    
     ports:
@@ -60,7 +67,8 @@ services:
   
   sessions:
     restart: always
-    env_file: .env
+    env_file: 
+      - .env-local
     image: redis:6.0.8
     ports:
       - "6379:6379"

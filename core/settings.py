@@ -34,16 +34,6 @@ class IPList(list):
 BASE_DIR    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = Path(__file__).parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False)
-
-# TODO: load production server from .env
-# TODO: automatic allowed hosts generation
-ALLOWED_HOSTS = ['*','localhost', '127.0.0.1', config('SERVER', default='127.0.0.1')]
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -91,13 +81,12 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-DEBUG = True
-
 INTERNAL_IPS = IPList([
     '127.0.0.1',
-    '192.168.1.0/24',
-    '172.20.0.0/24',
-    '172.20.0.1/32'
+    '10.0.0.0/8',
+    '172.16.0.0/12',
+    '192.168.0.0/16',
+    '169.254.0.0/16'
 ])
 
 DEBUG_TOOLBAR_PANELS = [
@@ -141,27 +130,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('MYSQL_DATABASE', default='dashboard'),
-        'USER': config('MYSQL_USER', default='dashboard'),
-        'PASSWORD': config('MYSQL_PASSWORD', default='secret'),
-        'HOST': config('MYSQL_HOST', default='localhost'),
-        'PORT': config('MYSQL_PORT', default='3306'),
-        #'OPTIONS': {
-        #    'read_default_file': '/path/to/my.cnf',
-        #},
-    }
-}
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -209,5 +177,19 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'core/static'),
 )
+
+# Settings profile selection
+DJANGO_SETTINGS_PROFILE=config('DJANGO_SETTINGS_PROFILE', default='local')
+if DJANGO_SETTINGS_PROFILE == 'local':
+    # No cloud access, local execution
+    from .settings_local import *
+elif DJANGO_SETTINGS_PROFILE == 'cloud':
+    # Cloud access, SSM usage
+    from .settings_cloud import *
+else:
+    # Default is local
+    from .settings_local import *
+
+
 #############################################################
 #############################################################

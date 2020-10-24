@@ -13,3 +13,4 @@ mysqlclient
 django-health-check
 django-debug-toolbar
 IPy
+boto3

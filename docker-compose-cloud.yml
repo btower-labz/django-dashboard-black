@@ -2,7 +2,11 @@ version: '3'
 services:
   app:
     restart: always
-    env_file: .env
+    env_file: 
+      - .env-cloud
+      - .env-cloud-prefix
+    environment:
+      - "DJANGO_SETTINGS_PROFILE=cloud"
     build: .
     ports:
       - "5005:5005"
