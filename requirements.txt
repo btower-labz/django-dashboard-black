@@ -1,6 +1,6 @@
 asgiref
 autopep8
-Django==2.1.*
+Django==2.2.*
 pycodestyle
 pytz
 sqlparse
@@ -9,3 +9,8 @@ dj-database-url
 python-decouple
 gunicorn
 whitenoise
+mysqlclient
+django-health-check
+django-debug-toolbar
+IPy
+boto3
